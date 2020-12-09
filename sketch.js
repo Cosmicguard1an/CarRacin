@@ -12,6 +12,10 @@ var cars, car1, car2, car3, car4;
 
 var track, car1_img, car2_img, car3_img, car4_img;
 
+var ranking, finishedPlayer
+var gold, silver, bronze
+
+
 function preload(){
   track = loadImage("../images/track.jpg");
   car1_img = loadImage("../images/car1.png");
@@ -19,6 +23,10 @@ function preload(){
   car3_img = loadImage("../images/car3.png");
   car4_img = loadImage("../images/car4.png");
   ground = loadImage("../images/ground.png");
+
+  gold = loadImage("../images/gold.jpg");
+  silver = loadImage("../images/silver.jpg");
+  bronze = loadImage("../images/bronze.jpg");
 }
 
 function setup(){
@@ -31,14 +39,17 @@ function setup(){
 
 
 function draw(){
-  if(playerCount === 4){
+  if(playerCount === 4 && finishedPlayer === 0){
     game.update(1);
   }
   if(gameState === 1){
     clear();
     game.play();
   }
-  if(gameState === 2){
-    game.end();
+  if(finishedPlayer === 4) {
+    game.update(2);
+  }
+  if(gameState === 2 && finishedPlayer === 4){
+    game.displayRanks();
   }
 }

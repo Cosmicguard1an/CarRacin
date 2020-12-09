@@ -38,6 +38,8 @@ class Game {
     car4 = createSprite(700,200);
     car4.addImage("car4",car4_img);
     cars = [car1, car2, car3, car4];
+
+    ranking = false;
   }
 
   play(){
@@ -78,30 +80,58 @@ class Game {
           cars[index - 1].shapeColor = "red";
           camera.position.x = displayWidth/2;
           camera.position.y = cars[index-1].y;
+
         }
-       
-        //textSize(15);
-        //text(allPlayers[plr].name + ": " + allPlayers[plr].distance, 120,display_position)
+        textAlign(CENTER);
+        textSize(15);
+        text(allPlayers[plr].name, cars[index-1].x ,cars[index-1].y + 75)
       }
 
     }
 
-    if(keyIsDown(UP_ARROW) && player.index !== null){
+    if(keyIsDown(UP_ARROW) && player.index !== null && ranking!= true){
       player.distance +=10
       player.update();
     }
 
-    if(player.distance > 3860){
-      gameState = 2;
-      player.rank += 1;
-      Player.updateRank(player.rank);
+    if(player.distance > 3860 && ranking === false){
+      //gameState = 2;
+      player.rank = finishedPlayer;
+      Player.updateRank();
+      player.update();
+      ranking = true
     }
    
     drawSprites();
   }
 
-  end(){
-    console.log("Game Ended");
-    console.log(player.rank);
-  }
+ displayRanks() {
+   camera.position.x = 0;
+   camera.position.y = 0;
+   Player.getPlayerInfo()
+   imageMode(CENTER);
+   image(bronze,displayWidth/-4,-100 + displayHeight/9,200,240);
+   image(silver,displayWidth/4,-100 + displayHeight/10,225,270);
+   image(gold,0,-100 + displayHeight,200,250)
+   textAlign(CENTER);
+   textSize(50);
+
+   for(var plr in allPlayers) {
+     if(allPlayers[plr].rank === 1) {
+       text("First: " + allPlayers[plr].name, 0,90)
+     }
+     else if(allPlayers[plr].rank === 2) {
+       text("Second: " + allPlayers[plr].name,displayWidth/4,displayHeight/10 + 75)
+     }
+
+     else if(allPlayers[plr].rank === 3) {
+       text("Third: " + allPlayers[plr].name,displayWidth/-4,displayHeight/9 + 75);
+     }
+
+     else {
+       textSize(30)
+       text("Congratulation for participating: " + allPlayers[plr].name,0,250)
+     }
+   }
+ }
 }

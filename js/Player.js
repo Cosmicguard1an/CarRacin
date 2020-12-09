@@ -23,20 +23,23 @@ class Player {
     var playerIndex = "players/player" + this.index;
     database.ref(playerIndex).set({
       name:this.name,
-      distance:this.distance
+      distance:this.distance,
+      rank: this.rank
     });
   }
  
   getRanking() {
-    database.ref('ranking').on("value",(data)=> {
-      this.rank = data.val();
+    var finishedPlayerRef = database.ref('finishedPlayer').on("value",(data)=> {
+      finishedPlayer = data.val();
     })
   }
 
-  static updateRank(rank) {
+  static updateRank() {
+
     database.ref('/').update({
-      ranking: rank
+      finishedPlayer: finishedPlayer + 1
     })
+    this.rank = this.rank + 1
   }
 
 
